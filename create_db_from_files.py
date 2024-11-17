@@ -7,7 +7,7 @@ import re
 db_filename = 'wow_raids_analysis.db'
 
 # Define the directory containing your CSV files
-csv_directory = r"C:\Users\The Madjutant\Desktop\CodeYou\Projects\Wow-Raid-Mythic-Dungeons-Cross-Analysis\Log files"
+csv_directory = r"db"
 
 # List of specific CSV files to import
 csv_files = [
@@ -52,7 +52,7 @@ create_joined_table_query = f"""
     JOIN {table_names[5]} ON {table_names[0]}."Name" = {table_names[5]}."Name";
 """
 
-# Execute the query to create the joined table
+# Create the joined table
 cursor.execute(create_joined_table_query)
 conn.commit()
 print("Joined table 'JoinedDPSLogs' created successfully in the database.")
@@ -64,12 +64,18 @@ joined_df.to_csv(output_csv, index=False)
 
 print(f"Joined data exported successfully to '{output_csv}'.")
 
-# Define the SQL query (example: total damage per player)
+# SQL Query to extract name, ilvl% by week (cleaned formatting) and Mythic Dungeons Done (as an integer otherwise it wouldn't sort it)
 query = """
-SELECT Name,i lvl%, i lvl%1, i lvl%2, i lvl%3, i lvl%4
+SELECT
+    Name,
+    CAST("Ilvl %" AS INTEGER) AS Ilvl_Percent, 
+    CAST("Ilvl %1" AS INTEGER) AS Ilvl_Percent1, 
+    CAST(REPLACE("Ilvl %2", '%', '') AS REAL) AS Ilvl_2_Percent,
+    "Ilvl %:3",
+    "Ilvl %:4",
+    CAST("Unnamed: 60" AS INTEGER) AS "Mythic Dungeons Done"
 FROM JoinedDPSLogs
-GROUP BY Name
-ORDER BY iLvl DESC;
+ORDER BY "Mythic Dungeons Done" DESC
 """
 
 # Execute the query and fetch the results into a Pandas DataFrame
@@ -79,7 +85,7 @@ df = pd.read_sql_query(query, conn)
 print(df)
 
 # Export the result to a CSV file
-df.to_csv('total_damage_per_player.csv', index=False)
+df.to_csv('IlvlParsePerPlayer.csv', index=False)
 
 # Close the database connection
 conn.close()
