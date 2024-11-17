@@ -1,1 +1,1 @@
-Select
+sqlite3 --version
