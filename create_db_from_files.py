@@ -68,12 +68,29 @@ print(f"Joined data exported successfully to '{output_csv}'.")
 query = """
 SELECT
     Name,
-    CAST("Ilvl %" AS INTEGER) AS Ilvl_Percent, 
-    CAST("Ilvl %1" AS INTEGER) AS Ilvl_Percent1, 
-    CAST(REPLACE("Ilvl %2", '%', '') AS REAL) AS Ilvl_2_Percent,
-    "Ilvl %:3",
-    "Ilvl %:4",
-    CAST("Unnamed: 60" AS INTEGER) AS "Mythic Dungeons Done"
+    CAST("Ilvl %" AS INTEGER) AS Ilvl_Percent,
+    CAST("Ilvl %:1" AS INTEGER) AS Ilvl_Percent_1,
+    CAST("Ilvl %:2" AS INTEGER) AS Ilvl_Percent_2,
+    CAST("Ilvl %:3" AS INTEGER) AS Ilvl_Percent_3,
+    CAST("Ilvl %:4" AS INTEGER) AS Ilvl_Percent_4,
+    CAST("Unnamed: 60" AS INTEGER) AS "Mythic Dungeons Done",
+    -- Calculate the average of ilvl% values
+    (
+        CAST("Ilvl %" AS INTEGER) +
+        CAST("Ilvl %:1" AS INTEGER) +
+        CAST("Ilvl %:2" AS INTEGER) +
+        CAST("Ilvl %:3" AS INTEGER) +
+        CAST("Ilvl %:4" AS INTEGER)
+    ) / 5 AS Average_Ilvl_Percent,
+    CAST("Unnamed: 60" AS INTEGER) / (
+        (
+            CAST("Ilvl %" AS INTEGER) +
+            CAST("Ilvl %:1" AS INTEGER) +
+            CAST("Ilvl %:2" AS INTEGER) +
+            CAST("Ilvl %:3" AS INTEGER) +
+            CAST("Ilvl %:4" AS INTEGER)
+        ) / 5
+    ) AS Mythic_To_Ilvl_Ratio
 FROM JoinedDPSLogs
 ORDER BY "Mythic Dungeons Done" DESC
 """
