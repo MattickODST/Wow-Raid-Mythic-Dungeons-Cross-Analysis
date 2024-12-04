@@ -2,6 +2,7 @@ import sqlite3
 import pandas as pd
 import os
 import re
+import matplotlib.pyplot as plt 
 
 # Define the database file name
 db_filename = 'wow_raids_analysis.db'
@@ -9,7 +10,7 @@ db_filename = 'wow_raids_analysis.db'
 # Define the directory containing your CSV files
 csv_directory = r"db"
 
-# List of specific CSV files to import
+# List of specific CSV files to import. These are files obtained during weekly raids via a tool called WarcraftLogs as well as a Overview file that comes from another tool that audits all of the players.
 csv_files = [
     "Nov 5th DPS Logs.csv",
     "Nov 7th DPS Logs.csv",
@@ -106,3 +107,35 @@ df.to_csv('IlvlParsePerPlayer.csv', index=False)
 
 # Close the database connection
 conn.close()
+
+# Bar graph 1: Mythic Dungeons Done by Name
+plt.style.use('fivethirtyeight')
+plt.figure(figsize=(10, 6))
+plt.bar(df['Name'], df['Mythic Dungeons Done'], color='blue')
+plt.xlabel('Name')
+plt.ylabel('Mythic Dungeons Done')
+plt.title('Mythic Dungeons Done by Player')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# Bar graph 2: Each Ilvl % value by Name
+plt.figure(figsize=(10, 6))
+bar_width = 0.15
+names = df['Name']
+x = range(len(names))
+
+# Create stacked bars for ilvl % values
+plt.bar(x, df['Ilvl_Percent'], width=bar_width, label='Ilvl %')
+plt.bar([p + bar_width for p in x], df['Ilvl_Percent_1'], width=bar_width, label='Ilvl %:1')
+plt.bar([p + 2 * bar_width for p in x], df['Ilvl_Percent_2'], width=bar_width, label='Ilvl %:2')
+plt.bar([p + 3 * bar_width for p in x], df['Ilvl_Percent_3'], width=bar_width, label='Ilvl %:3')
+plt.bar([p + 4 * bar_width for p in x], df['Ilvl_Percent_4'], width=bar_width, label='Ilvl %:4')
+
+plt.xlabel('Name')
+plt.ylabel('Ilvl % Values')
+plt.title('Ilvl % by Player')
+plt.xticks([p + 2 * bar_width for p in x], names, rotation=45, ha='right')
+plt.legend()
+plt.tight_layout()
+plt.show()
