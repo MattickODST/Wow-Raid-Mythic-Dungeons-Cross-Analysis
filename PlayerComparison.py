@@ -1,1 +1,0 @@
-SELECT Name,iLvl%, ilvl%1, ilvl%2, ilvl%3, ilvl%4  FROM JoinedDPSLogs Limit 10;

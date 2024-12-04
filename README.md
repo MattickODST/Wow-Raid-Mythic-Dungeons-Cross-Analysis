@@ -11,3 +11,4 @@
 # It will extrapolate the necessary data to perform the analysis.
 # It will compare the data sets.
 # It will clean the data to make it usable.
+# It will present the data in 3 different visualizations and create a usable .csv file. 

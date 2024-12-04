@@ -139,3 +139,13 @@ plt.xticks([p + 2 * bar_width for p in x], names, rotation=45, ha='right')
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+# Bar graph 3: Mythic to Ilvl Ratio by Name
+plt.figure(figsize=(10, 6))
+plt.bar(df['Name'], df['Mythic_To_Ilvl_Ratio'], color='green')
+plt.xlabel('Name')
+plt.ylabel('Mythic Dungeons Done / Average Ilvl %')
+plt.title('Mythic to Ilvl Ratio by Player')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
