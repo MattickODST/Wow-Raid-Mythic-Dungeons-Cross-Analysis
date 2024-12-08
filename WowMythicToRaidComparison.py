@@ -90,7 +90,7 @@ SELECT
             CAST("Ilvl %:2" AS INTEGER) +
             CAST("Ilvl %:3" AS INTEGER) +
             CAST("Ilvl %:4" AS INTEGER)
-        ) / 5
+        ) / 5.0
     ) AS Mythic_To_Ilvl_Ratio
 FROM JoinedDPSLogs
 ORDER BY "Mythic Dungeons Done" DESC
@@ -141,8 +141,20 @@ plt.tight_layout()
 plt.show()
 
 # Bar graph 3: Mythic to Ilvl Ratio by Name
-plt.figure(figsize=(10, 6))
-plt.bar(df['Name'], df['Mythic_To_Ilvl_Ratio'], color='green')
+plt.figure(figsize=(15, 8))
+bars = plt.bar(df['Name'], df['Mythic_To_Ilvl_Ratio'], color='green')
+
+# Add numbers on top of each bar
+for bar in bars:
+    height = bar.get_height()
+    plt.text(
+        bar.get_x() + bar.get_width() / 2,  # Center the text horizontally
+        height,  # Place text above the bar
+        f'{height:.2f}',  # Format the number to 2 decimal places
+        ha='center',  # Horizontal alignment
+        va='bottom',  # Vertical alignment
+        fontsize=10  # Adjust font size if necessary
+    )
 plt.xlabel('Name')
 plt.ylabel('Mythic Dungeons Done / Average Ilvl %')
 plt.title('Number of Mythic dungeons completed to Ilvl Performance Ratio by Player (lower is better)')

@@ -14,4 +14,4 @@
 # It will present the data in 3 different visualizations and create a usable .csv file. 
 
 
-# To Use: Install the requirements.txt, start a virtual environment, then run the WowMythicToRaidComparison.py file
+# To Use: Start a virtual environment, install the requirements.txt, then run the WowMythicToRaidComparison.py file
